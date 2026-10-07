@@ -1,97 +1,129 @@
-# Real-Time Flappy Bird Clone
+# Flappy Bird – Pygame
 
-This project is a terminal-based Flappy Bird clone using **Pygame**. It introduces students to interactive game design using object-oriented principles and real-time graphical rendering.
+A small Flappy Bird implementation built with Python and Pygame. The game uses a simple object-oriented structure with separate bird, pipe, game-engine, and audio components.
 
----
+## Requirements
 
-## What’s Provided
+- Python 3.10 or newer
+- Pygame (listed in `requirements.txt`)
+- A working graphical environment for Pygame
 
-A partially working version of a Flappy Bird game with:
+## Installation
 
-- A player-controlled bird affected by gravity, with a flap on key/click
-- Scrolling pipes with a randomized gap
-- Score display
-
-You are expected to **analyze**, **interact with an AI assistant**, and **complete/fix** the game to make it fully functional.
-
-### **Use an LLM (e.g. ChatGPT or Claude) as your debugging and pair-programming partner for this lab.**
-
----
-
-## Getting Started
-
-### Setup
-
-1. Clone the repo or download the project folder.
-2. Make sure you have Python 3.10+ installed.
-3. Install dependencies:
+From the project directory:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-4. Run the game:
+If your system uses a separate Python 3 command, use `python3` instead.
+
+## Run
 
 ```bash
 python main.py
 ```
 
+The game opens in a 500×700 Pygame window.
 
----
+## Controls
 
-## Tasks to Complete
+During gameplay:
 
-Each task must be completed using an iterative process involving LLM suggestions and your critical code review.
+- `Space` — flap
+- Mouse click — flap
 
-### Task 1: Refine Collision Detection
+Difficulty selection:
 
-> The bird sometimes clips the edge of a pipe without dying, especially as pipe speed increases. Investigate and enhance collision accuracy so hits are detected consistently.
+- `1` — Easy
+- `2` — Medium
+- `3` — Hard
+- `Enter` or `Space` — start using the current/default difficulty
+- `Q` or `Esc` — quit
 
-### Task 2: Implement Game Over Condition
+After Game Over:
 
-> Add a screen that displays the final score once the bird hits the ground, ceiling, or a pipe, then gracefully waits for input instead of just printing to the console.
+- `R` — replay the current difficulty
+- `Q` or `Esc` — quit
 
+## Difficulty Modes
 
-### Task 3: Add Replay Option
+Medium is the default difficulty.
 
-> After Game Over, allow the user to play again by choosing a difficulty (Easy, Medium, or Hard pipe speed/gap), or exit.
+| Difficulty | Pipe speed | Spawn interval | Gap | Gravity | Flap strength |
+|---|---:|---:|---:|---:|---:|
+| Easy | 3 | 105 frames | 190 px | 0.45 | -7.5 |
+| Medium | 4 | 90 frames | 150 px | 0.50 | -8.0 |
+| Hard | 5 | 75 frames | 125 px | 0.55 | -8.2 |
 
+Higher difficulty increases pipe speed and spawn frequency, reduces the gap, and slightly changes bird physics.
 
-### Task 4: Add Sound Feedback
+The selected difficulty is shown in the gameplay HUD.
 
-> Add basic sound effects for flapping, passing a pipe (scoring), and dying.
+## Collision Detection
 
+Collision detection is performed every gameplay frame. The bird uses its full bounding `pygame.Rect` rather than checking only its center point.
 
----
+The bird rectangle is tested against the upper and lower pipe rectangles. The previous and current pipe rectangles are combined into a swept rectangle before collision testing, reducing the chance of a fast-moving pipe passing through the bird between frames.
 
-## Expected Behavior
+The bird also loses when its bounding rectangle reaches the top or bottom of the game window.
 
-- Bird flaps upward on `Space` or mouse click, and falls due to gravity otherwise
-- Pipes spawn at a regular interval and scroll from right to left with a randomized gap
-- Score increases by one each time the bird passes a pipe
-- Game ends when the bird hits the ground, the ceiling, or a pipe
+## Game Over
 
----
+A pipe or boundary collision changes the game state from `playing` to `game_over`. Gameplay updates stop while the Game Over screen is displayed, so pipes and score no longer advance.
 
-## Folder Structure
+The screen displays:
 
-```
+- `GAME OVER`
+- Final score
+- Current difficulty
+- `R = Replay`
+- `Q or ESC = Quit`
+
+Keyboard input is handled while in the Game Over state. Quit events are returned to the main application loop so the Pygame window closes cleanly.
+
+## Replay
+
+Pressing `R` after Game Over starts a new run without restarting Python. The selected difficulty is retained and all run-specific state is reset, including:
+
+- Bird position and velocity
+- Score
+- Pipe positions and scoring flags
+- Pipe spawn timer
+- Game state
+
+Difficulty can be changed from the difficulty-selection screen before starting a run.
+
+## Audio
+
+The game includes three local WAV effects in `game/assets/`:
+
+- `flap.wav` — played when the bird flaps
+- `score.wav` — played when the bird successfully passes a pipe
+- `death.wav` — played once when the player dies
+
+Audio is managed by `game/audio_manager.py` using `pygame.mixer`. Mixer initialization and individual sound loading are handled safely. If audio cannot be initialized or an asset is unavailable, the game continues without sound; no external files are downloaded at runtime.
+
+## Project Structure
+
+```text
 flappybird-main/
 ├── main.py
 ├── requirements.txt
-├── game/
-│   ├── game_engine.py
-│   ├── bird.py
-│   └── pipe.py
-└── README.md
+├── README.md
+└── game/
+    ├── game_engine.py
+    ├── bird.py
+    ├── pipe.py
+    ├── audio_manager.py
+    └── assets/
+        ├── flap.wav
+        ├── score.wav
+        └── death.wav
 ```
 
----
+## Known Limitations
 
-## Submission Checklist
-
-Submission is only the following three things:
-
-- [] A 10-second video of gameplay **before** your changes, showing the bug/broken behavior
-- [] A 10-second video of gameplay **after** your changes, showing the bug fixed and the new features working
-- [] The Chat/LLM used page link, with the complete chat history
+- The game requires a graphical environment capable of running Pygame.
+- Audio is optional; unsupported or unavailable audio hardware disables sound without preventing gameplay.
+- The game uses simple geometric graphics and does not include sprite artwork or animation.

@@ -32,6 +32,10 @@ def main():
             action = engine.handle_event(event)
             if action == "quit":
                 running = False
+                break
+
+        if not running:
+            break
 
         engine.handle_input()
         engine.update()

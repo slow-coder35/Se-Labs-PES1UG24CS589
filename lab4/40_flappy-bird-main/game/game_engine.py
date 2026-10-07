@@ -49,8 +49,9 @@ class GameEngine:
         self.small_font = pygame.font.SysFont("Arial", 24)
         self.audio = AudioManager()
 
-        self.game_state = "difficulty_select"
+        # Build initial run objects, but keep the application at the difficulty menu.
         self._reset_game()
+        self.game_state = "difficulty_select"
 
     def _reset_game(self):
         """Reset every run-specific value using the selected difficulty."""
@@ -96,11 +97,12 @@ class GameEngine:
                 return None
 
             if self.game_state == "game_over":
-                # R returns to difficulty selection so the next run can use
-                # a different difficulty without restarting Python.
+                # Replay the current difficulty immediately without restarting Python.
                 if event.key == pygame.K_r:
-                    self.game_state = "difficulty_select"
-                elif event.key in (pygame.K_q, pygame.K_ESCAPE):
+                    self._reset_game()
+                    return None
+                # Propagate quit to the application loop; do not process gameplay input.
+                if event.key in (pygame.K_q, pygame.K_ESCAPE):
                     return "quit"
                 return None
 
