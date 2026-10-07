@@ -7,27 +7,46 @@ from .pipe import Pipe
 WHITE = (255, 255, 255)
 GREEN = (0, 150, 0)
 
+
 class GameEngine:
     def __init__(self, width, height):
         self.width = width
         self.height = height
 
-        self.bird = Bird(width // 4, height // 2)
         self.pipe_speed = 4
         self.pipe_interval = 90  # frames between pipe spawns
-        self._spawn_timer = 0
-        self.pipes = [Pipe(width + 100, height, speed=self.pipe_speed)]
-
-        self.score = 0
         self.font = pygame.font.SysFont("Arial", 30)
+        self.game_over_font = pygame.font.SysFont("Arial", 48, bold=True)
+        self.action_font = pygame.font.SysFont("Arial", 28)
+
+        self._reset_game()
+
+    def _reset_game(self):
+        """Reset all gameplay state for a new run."""
+        self.bird = Bird(self.width // 4, self.height // 2)
+        self._spawn_timer = 0
+        self.pipes = [Pipe(self.width + 100, self.height, speed=self.pipe_speed)]
+        self.score = 0
         self.game_over = False
 
     def handle_event(self, event):
+        """Handle input and return 'quit' when the application should exit."""
+        if self.game_over:
+            # Game-over input is handled separately so normal gameplay input
+            # cannot flap the bird or otherwise advance the game.
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    self._reset_game()
+                elif event.key in (pygame.K_q, pygame.K_ESCAPE):
+                    return "quit"
+            return None
+
         # Flap is edge-triggered (KEYDOWN / MOUSEBUTTONDOWN), not held.
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             self.bird.flap()
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.bird.flap()
+        return None
 
     def handle_input(self):
         # Reserved for continuously-held-key input; flapping is handled
@@ -35,6 +54,8 @@ class GameEngine:
         pass
 
     def update(self):
+        # Gameplay is completely frozen after death. The Game Over screen
+        # remains interactive through handle_event(), but nothing moves here.
         if self.game_over:
             return
 
@@ -84,7 +105,29 @@ class GameEngine:
         score_text = self.font.render(f"Score: {self.score}", True, WHITE)
         screen.blit(score_text, (10, 10))
 
-        if self.game_over and not getattr(self, "_game_over_logged", False):
-            # NOTE: no proper game-over screen yet - see Task 2 in the README.
-            print("Game over! Final score:", self.score)
-            self._game_over_logged = True
+        if self.game_over:
+            self._render_game_over(screen)
+
+    def _render_game_over(self, screen):
+        """Draw the final-score overlay without advancing gameplay state."""
+        # Keep the existing sky-blue background and white text style while
+        # adding a subtle dark overlay to separate the menu from gameplay.
+        overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 100))
+        screen.blit(overlay, (0, 0))
+
+        title = self.game_over_font.render("GAME OVER", True, WHITE)
+        final_score = self.font.render(f"Final Score: {self.score}", True, WHITE)
+        replay = self.action_font.render("R = Replay", True, WHITE)
+        quit_text = self.action_font.render("Q or ESC = Quit", True, WHITE)
+
+        center_x = self.width // 2
+        title_y = self.height // 2 - 100
+        score_y = title_y + title.get_height() + 20
+        replay_y = score_y + final_score.get_height() + 35
+        quit_y = replay_y + replay.get_height() + 10
+
+        screen.blit(title, title.get_rect(center=(center_x, title_y)))
+        screen.blit(final_score, final_score.get_rect(center=(center_x, score_y)))
+        screen.blit(replay, replay.get_rect(center=(center_x, replay_y)))
+        screen.blit(quit_text, quit_text.get_rect(center=(center_x, quit_y)))
