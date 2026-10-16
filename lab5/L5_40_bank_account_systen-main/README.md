@@ -1,51 +1,21 @@
-# Lab 5: Static Code Analysis — Bank Account System
+# Lab 5: Static Code Analysis - Bank Account System
 
-**Your file:** `bank_account_system.py`
+This project is the completed analysis and revision of `bank_account_system.py`.
 
-Follow the lab handout for the full instructions.
+## Run
 
-## About the program
+```bash
+python bank_account_system.py
+```
 
-A bank account ledger manager. It handles account creation, deposits, withdrawals, promotional bonus calculation, and ledger exports.
-
-The code works, but only just. It has quality, style and security problems of the kind Pylint, Flake8 and Bandit are built to find.
-
-## What to do
-
-1. **Run it first** and read the output carefully:
-   ```bash
-   python bank_account_system.py
-   ```
-   Not every problem in this file is something a tool will flag, so pay attention to output that looks wrong.
-
-2. **Install the tools:**
-   ```bash
-   pip install pylint bandit flake8
-   ```
-
-3. **Run the analysis** and save the reports:
-   ```bash
-   pylint bank_account_system.py > pylint_report.txt
-   bandit -r bank_account_system.py > bandit_report.txt
-   flake8 bank_account_system.py > flake8_report.txt
-   ```
-
-4. **Document the issues** in `issues.md` using this table (at least 4 rows, high and medium severity first):
-
-   | Issue | Type | Line(s) | Description | Fix Approach |
-   |-------|------|---------|-------------|--------------|
-   | ... | ... | ... | ... | ... |
-
-5. **Fix the code.** Fix at least 4 of the issues you documented, then rerun all three tools to confirm they are gone. Repeat until you are satisfied. The program should still do its job when you are done.
-
-6. **Reflect.** Answer the four reflection questions from the handout in `reflection.md`.
+The demonstration writes `backup.txt` as JSON in the current directory. Importing the module does not run the demonstration.
 
 ## Deliverables
 
-1. `bank_account_system.py`: your cleaned version, with at least 4 issues fixed.
-2. `issues.md`: the completed issue table.
-3. `reflection.md`: your answers to the reflection questions.
+- `bank_account_system.py`: revised bank account program.
+- `issues.md`: findings, original line numbers, fixes, and before/after results.
+- `reflection.md`: four reflection answers. The supplied handout refers to reflection questions but does not print them, so the answers follow its learning outcomes.
+- `pylint_report_before.txt`, `bandit_report_before.txt`, `flake8_report_before.txt`: baseline tool output.
+- `pylint_report.txt`, `bandit_report.txt`, `flake8_report.txt`: final tool output.
 
-**Target:** aim for a Pylint score above 9.5 on your final file. A perfect 10.00/10 is very good.
-
-Be ready to explain the bugs you found and how you fixed them. You may be called on to present.
+This lab was added to the course repository in three commits: Bandit fixes with baseline reports, Pylint fixes, and Flake8 fixes with final reports. The final analysis result is Pylint 10.00/10, with no Bandit or Flake8 findings.

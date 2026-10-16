@@ -47,7 +47,10 @@ def withdraw(acc_id, amount):
 def compute_bonus(acc_id, rate):
     """Calculate a bonus from a rate between zero and one."""
     if not 0 <= rate <= 1:
-        raise ValueError("Bonus rate must be between zero and one, inclusive, for this promotion")
+        raise ValueError(
+            "Bonus rate must be between zero and one, inclusive, "
+            "for this promotion"
+        )
     return account_data[acc_id]["balance"] * rate
 
 
