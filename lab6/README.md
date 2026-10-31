@@ -2,7 +2,8 @@
 
 Student: PES1UG24CS589
 
-Source: https://github.com/SETAPESU26/L6_L7_40_ride_share_fare
+Original assignment repository: [SETAPESU26/L6_L7_40_ride_share_fare](https://github.com/SETAPESU26/L6_L7_40_ride_share_fare)
+
 Source commit: ee40b2b84e90255e47b16f56e8975da88a353f78
 
 The application and original starter tests are copied unchanged from `Lab 6/`
