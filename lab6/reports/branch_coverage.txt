@@ -1,0 +1,14 @@
+PES1UG24CS589 | Lab 6 | Branch Coverage
+
+$ coverage run --branch --source=ride_share_fare -m pytest -q BranchCoverageTest_ride_share_fare.py
+....................................................                     [100%]
+52 passed in 0.13s
+
+$ coverage report -m --fail-under=90
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+ride_share_fare.py      37      0     26      0   100%
+----------------------------------------------------------------
+TOTAL                   37      0     26      0   100%
+
+Branch-only coverage: 26/26 = 100%
