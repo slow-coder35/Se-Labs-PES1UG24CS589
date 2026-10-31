@@ -1,0 +1,12 @@
+PES1UG24CS589 | Lab 6 | Code Coverage
+
+$ coverage run --source=ride_share_fare -m pytest -q CodeCoverageTest_ride_share_fare.py
+...........                                                              [100%]
+11 passed in 0.05s
+
+$ coverage report -m --fail-under=90
+Name                 Stmts   Miss  Cover   Missing
+--------------------------------------------------
+ride_share_fare.py      37      0   100%
+--------------------------------------------------
+TOTAL                   37      0   100%
