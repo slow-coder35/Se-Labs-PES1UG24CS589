@@ -40,7 +40,8 @@ subscription allowance, outstation long-distance charges, capacity decisions,
 and all three pickup statuses. Covering every line alone does not demonstrate
 that all decision outcomes or boundary cases were tested.
 
-Evidence: `screenshots/code_coverage.png`, `reports/code_coverage.txt`, and
+Evidence: `screenshots/code_test_execution.png` (detailed test execution),
+`screenshots/code_coverage.png` (coverage summary), `reports/code_coverage.txt`, and
 `reports/code_coverage.json`. Coverage measures only `ride_share_fare.py`, so test
 code does not inflate the application's reported coverage.
 
@@ -71,7 +72,8 @@ branch-only coverage is 25/26 (96.15%). The long city/other-zone cases in Stage 
 cover that missing outcome. This demonstrates why 100% line coverage alone does
 not prove complete branch coverage.
 
-Evidence: `screenshots/branch_coverage.png`, `reports/branch_coverage.txt`, and
+Evidence: `screenshots/branch_test_execution.png` (test execution),
+`screenshots/branch_coverage.png` (coverage summary), `reports/branch_coverage.txt`, and
 `reports/branch_coverage.json`. Screenshots show actual terminal executions, and
 only the completed stages have screenshots.
 
@@ -91,6 +93,9 @@ coverage.py does not separately measure each operand of a compound condition.
 
 - `CodeCoverageTest_ride_share_fare.py`: code-coverage tests.
 - `BranchCoverageTest_ride_share_fare.py`: branch-coverage tests.
+- `screenshots/code_test_execution.png`: all 11 code-coverage tests passing.
 - `screenshots/code_coverage.png`: terminal evidence above 90% line coverage.
+- `screenshots/branch_test_execution.png`: all 52 branch-coverage tests passing.
 - `screenshots/branch_coverage.png`: terminal evidence above 90% branch coverage.
+- Four screenshots total, two for each completed coverage stage.
 - Two separate commits: first code-coverage tests/evidence, then branch tests/evidence.
